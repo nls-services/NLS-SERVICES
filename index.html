@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NLS Services – Entretien, Jardinage & Livraison à Blois</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -367,12 +368,7 @@
       <p style="color: var(--silver); font-size:0.82rem; margin-top:1.5rem;">Vous n'êtes pas sûr(e) d'être dans notre zone ? <a href="#contact" style="color:var(--gold);">Contactez-nous</a>, nous étudions toute demande.</p>
     </div>
     <div class="reveal">
-      <div class="zone-map-placeholder">
-        <span class="map-icon">📍</span>
-        <p><strong style="color:var(--white);">Blois, Loir-et-Cher</strong></p>
-        <p>Centre-Val de Loire</p>
-        <p style="font-size:0.8rem; margin-top:0.5rem; color: rgba(138,138,138,0.7);">Remplacez cette zone par une carte<br>Google Maps intégrée si souhaité</p>
-      </div>
+      <div id="map" style="width:100%;height:420px;border:1px solid rgba(201,168,76,0.2);border-radius:4px;"></div>
     </div>
   </div>
 </section>
@@ -391,7 +387,7 @@
       </div>
       <div class="contact-info-block">
         <p class="contact-info-label">Email</p>
-        <p class="contact-info-value">nls.services.contact@gmail.com</p>
+        <p class="contact-info-value">contact@nls-services.fr</p>
       </div>
       <div class="contact-info-block">
         <p class="contact-info-label">Zone</p>
@@ -403,16 +399,16 @@
         <div class="form-row">
           <div>
             <label for="prenom">Prénom</label>
-            <input type="text" id="prenom" name="prenom" placeholder="Prénom" required />
+            <input type="text" id="prenom" name="prenom" placeholder="Jean" required />
           </div>
           <div>
             <label for="nom">Nom</label>
-            <input type="text" id="nom" name="nom" placeholder="Nom" required />
+            <input type="text" id="nom" name="nom" placeholder="Dupont" required />
           </div>
         </div>
         <div>
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="prénom.nom@email.com" required />
+          <input type="email" id="email" name="email" placeholder="jean.dupont@email.com" required />
         </div>
         <div>
           <label for="telephone">Téléphone</label>
@@ -451,6 +447,35 @@
 </footer>
 
 <script>
+  // Leaflet map
+  (function() {
+    var script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.onload = function() {
+      var map = L.map('map', { zoomControl: true, scrollWheelZoom: false }).setView([47.5936, 1.3328], 10);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap © CARTO',
+        maxZoom: 14
+      }).addTo(map);
+      L.circle([47.5936, 1.3328], {
+        radius: 30000,
+        color: '#c9a84c',
+        fillColor: '#c9a84c',
+        fillOpacity: 0.08,
+        weight: 2,
+        dashArray: '6 4'
+      }).addTo(map);
+      var icon = L.divIcon({
+        className: '',
+        html: '<div style="width:14px;height:14px;background:#c9a84c;border-radius:50%;border:2px solid #fff;"></div>',
+        iconSize: [14, 14], iconAnchor: [7, 7]
+      });
+      L.marker([47.5936, 1.3328], {icon: icon}).addTo(map)
+        .bindPopup('<strong style="color:#c9a84c;">NLS Services</strong><br>Blois, Loir-et-Cher (41)').openPopup();
+    };
+    document.body.appendChild(script);
+  })();
+
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries) => {
