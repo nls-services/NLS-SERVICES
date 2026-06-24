@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NLS Services – Entretien, Jardinage & Livraison à Blois</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0e0e0e;
+      --charcoal:#1a1a1a;
+      --gray:    #2e2e2e;
+      --silver:  #8a8a8a;
+      --white:   #f5f5f0;
+      --gold:    #c9a84c;
+      --gold-lt: #e2c87a;
+      --gold-dk: #9e7a2e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 6vw;
+      background: rgba(14,14,14,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--silver); font-size: 0.85rem; letter-spacing: 0.08em;
+      text-transform: uppercase; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 6vw 5rem;
+      background:
+        linear-gradient(160deg, rgba(201,168,76,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 60%);
+      position: relative; overflow: hidden;
+    }
+    .hero-divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 1.5rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700; line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title span { color: var(--gold); }
+    .hero-sub {
+      font-size: 1.05rem; color: var(--silver);
+      max-width: 520px; margin: 0 auto 2.5rem;
+      font-weight: 300; line-height: 1.75;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 0.85rem 2.4rem;
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 600; font-size: 0.85rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 6vw; }
+    .section-label {
+      font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.15;
+      color: var(--white); margin-bottom: 1rem;
+    }
+    .section-intro {
+      color: var(--silver); max-width: 540px;
+      font-weight: 300; margin-bottom: 3rem;
+    }
+    .gold-rule {
+      width: 40px; height: 2px;
+      background: var(--gold); margin-bottom: 2.5rem;
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--charcoal); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5px;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.15);
+    }
+    .service-card {
+      background: var(--charcoal);
+      padding: 2.5rem 2rem;
+      transition: background 0.25s;
+    }
+    .service-card:hover { background: var(--gray); }
+    .service-icon {
+      font-size: 2rem; margin-bottom: 1rem; display: block;
+    }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--white); margin-bottom: 0.75rem;
+    }
+    .service-desc {
+      color: var(--silver); font-size: 0.9rem;
+      font-weight: 300; line-height: 1.7;
+    }
+    .service-list {
+      margin-top: 1rem; padding-left: 1rem;
+      color: var(--silver); font-size: 0.88rem;
+      line-height: 1.9;
+    }
+    .service-list li::marker { color: var(--gold); }
+
+    /* ── ZONE ── */
+    #zone { background: var(--black); }
+    .zone-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .zone-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+    .zone-map-placeholder {
+      background: var(--charcoal);
+      border: 1px solid rgba(201,168,76,0.2);
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1rem;
+      color: var(--silver); font-size: 0.9rem;
+      text-align: center; padding: 2rem;
+    }
+    .zone-map-placeholder .map-icon { font-size: 3rem; }
+    .zone-stat {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .zone-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 700; color: var(--gold);
+      line-height: 1;
+    }
+    .zone-stat-label { color: var(--silver); font-size: 0.9rem; }
+    .zone-communes {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .commune-tag {
+      padding: 0.3rem 0.9rem;
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--silver); font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--charcoal); }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    .contact-info-block { margin-bottom: 2rem; }
+    .contact-info-label {
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.3rem;
+    }
+    .contact-info-value { color: var(--white); font-size: 1rem; }
+    form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    label {
+      font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--silver); display: block; margin-bottom: 0.4rem;
+    }
+    input, select, textarea {
+      width: 100%;
+      background: var(--gray);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--white);
+      padding: 0.75rem 1rem;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+    }
+    select option { background: var(--gray); }
+    textarea { resize: vertical; min-height: 130px; }
+    .btn-submit {
+      align-self: flex-start;
+      padding: 0.9rem 2.5rem;
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 600; font-size: 0.85rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-submit:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding: 2.5rem 6vw;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--gold);
+    }
+    .footer-copy { color: var(--silver); font-size: 0.8rem; }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { color: var(--silver); font-size: 0.8rem; text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 5vw; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">NLS Services</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#zone">Zone</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div>
+    <div class="hero-divider"></div>
+    <p class="hero-eyebrow">Blois & Loir-et-Cher (41)</p>
+    <h1 class="hero-title">Des services à domicile<br><span>à votre mesure.</span></h1>
+    <p class="hero-sub">Entretien automobile, espaces verts, livraison à domicile — NLS Services intervient chez vous, quand vous en avez besoin.</p>
+    <a href="#contact" class="btn-primary">Demander un devis</a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <p class="section-label">Ce que nous faisons</p>
+    <h2 class="section-title">Nos prestations</h2>
+    <div class="gold-rule"></div>
+    <p class="section-intro">Trois domaines d'activité pour simplifier votre quotidien, auprès des particuliers et des professionnels.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <span class="service-icon">🚗</span>
+      <div class="service-name">Nettoyage automobile</div>
+      <p class="service-desc">Entretien complet et soigneux de votre véhicule, à domicile ou sur votre lieu de travail.</p>
+      <ul class="service-list">
+        <li>Lavage extérieur & intérieur</li>
+        <li>Nettoyage des vitres & jantes</li>
+        <li>Aspiration & désodorisation</li>
+        <li>Traitement des plastiques</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌿</span>
+      <div class="service-name">Espaces verts</div>
+      <p class="service-desc">Entretien régulier ou ponctuel de votre jardin pour qu'il reste impeccable en toute saison.</p>
+      <ul class="service-list">
+        <li>Tonte de pelouse</li>
+        <li>Taille de haies & arbustes</li>
+        <li>Désherbage & débroussaillage</li>
+        <li>Ramassage de feuilles</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📦</span>
+      <div class="service-name">Livraison à domicile</div>
+      <p class="service-desc">Courses alimentaires ou colis, nous assurons la livraison chez vous en toute simplicité.</p>
+      <ul class="service-list">
+        <li>Livraison de courses</li>
+        <li>Transport de colis</li>
+        <li>Service flexible sur rendez-vous</li>
+        <li>Particuliers & petites entreprises</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ZONE -->
+<section id="zone">
+  <div class="zone-layout">
+    <div class="reveal">
+      <p class="section-label">Où nous intervenons</p>
+      <h2 class="section-title">Zone d'intervention</h2>
+      <div class="gold-rule"></div>
+      <p class="section-intro">Basés à Blois, nous intervenons sur l'ensemble de la commune et ses environs dans le département du Loir-et-Cher.</p>
+      <div class="zone-stat">
+        <span class="zone-stat-num">41</span>
+        <span class="zone-stat-label">Loir-et-Cher</span>
+      </div>
+      <p style="color: var(--silver); font-size:0.9rem; margin-bottom:1rem;">Secteurs couverts :</p>
+      <div class="zone-communes">
+        <span class="commune-tag">Blois</span>
+        <span class="commune-tag">La Chaussée-Saint-Victor</span>
+        <span class="commune-tag">Saint-Gervais-la-Forêt</span>
+        <span class="commune-tag">Vineuil</span>
+        <span class="commune-tag">Mer</span>
+        <span class="commune-tag">Vendôme</span>
+        <span class="commune-tag">Romorantin</span>
+        <span class="commune-tag">Et alentours</span>
+      </div>
+      <p style="color: var(--silver); font-size:0.82rem; margin-top:1.5rem;">Vous n'êtes pas sûr(e) d'être dans notre zone ? <a href="#contact" style="color:var(--gold);">Contactez-nous</a>, nous étudions toute demande.</p>
+    </div>
+    <div class="reveal">
+      <div class="zone-map-placeholder">
+        <span class="map-icon">📍</span>
+        <p><strong style="color:var(--white);">Blois, Loir-et-Cher</strong></p>
+        <p>Centre-Val de Loire</p>
+        <p style="font-size:0.8rem; margin-top:0.5rem; color: rgba(138,138,138,0.7);">Remplacez cette zone par une carte<br>Google Maps intégrée si souhaité</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-layout">
+    <div class="reveal">
+      <p class="section-label">Nous joindre</p>
+      <h2 class="section-title">Demander un devis</h2>
+      <div class="gold-rule"></div>
+      <p class="section-intro" style="margin-bottom:2.5rem;">Décrivez votre besoin, nous vous répondons rapidement pour convenir d'un rendez-vous.</p>
+      <div class="contact-info-block">
+        <p class="contact-info-label">Téléphone</p>
+        <p class="contact-info-value">+33 X XX XX XX XX</p>
+      </div>
+      <div class="contact-info-block">
+        <p class="contact-info-label">Email</p>
+        <p class="contact-info-value">contact@nls-services.fr</p>
+      </div>
+      <div class="contact-info-block">
+        <p class="contact-info-label">Zone</p>
+        <p class="contact-info-value">Blois & environs — Loir-et-Cher (41)</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div>
+            <label for="prenom">Prénom</label>
+            <input type="text" id="prenom" name="prenom" placeholder="Jean" required />
+          </div>
+          <div>
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" name="nom" placeholder="Dupont" required />
+          </div>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="jean.dupont@email.com" required />
+        </div>
+        <div>
+          <label for="telephone">Téléphone</label>
+          <input type="tel" id="telephone" name="telephone" placeholder="06 XX XX XX XX" />
+        </div>
+        <div>
+          <label for="service">Service souhaité</label>
+          <select id="service" name="service">
+            <option value="">-- Choisir une prestation --</option>
+            <option>Nettoyage automobile</option>
+            <option>Entretien des espaces verts</option>
+            <option>Livraison à domicile</option>
+            <option>Autre / Plusieurs services</option>
+          </select>
+        </div>
+        <div>
+          <label for="message">Votre demande</label>
+          <textarea id="message" name="message" placeholder="Décrivez brièvement votre besoin..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Envoyer la demande</button>
+        <p id="form-msg" style="display:none; color:var(--gold); font-size:0.85rem; margin-top:0.5rem;"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">NLS Services</span>
+  <span class="footer-copy">© 2025 NLS Services — Micro-entreprise — Blois, Loir-et-Cher</span>
+  <ul class="footer-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#zone">Zone</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Form submit (front-end only — à connecter à un vrai service email)
+  function handleSubmit(e) {
+    e.preventDefault();
+    const msg = document.getElementById('form-msg');
+    msg.textContent = '✓ Demande envoyée ! Nous vous répondrons dans les plus brefs délais.';
+    msg.style.display = 'block';
+    e.target.reset();
+  }
+</script>
+</body>
+</html>
