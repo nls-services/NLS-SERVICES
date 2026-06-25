@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Livraison à Domicile – NLS Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6; --surface: #ffffff; --dark: #1e1e1e;
+      --mid: #4a4a4a; --muted: #8a8780; --border: #e5e2db;
+      --gold: #b8922a; --gold-lt: #d4aa4a; --gold-bg: #fdf6e8;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--dark); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 6vw; background: rgba(249,248,246,0.95);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 700; color: var(--dark); text-decoration: none; }
+    .nav-logo span { color: var(--gold); }
+    .nav-back { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--gold); }
+    .page-hero { padding: 8rem 6vw 4rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .breadcrumb { font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .breadcrumb a { color: var(--gold); text-decoration: none; }
+    .page-tag { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+    .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.1; color: var(--dark); margin-bottom: 1rem; }
+    .page-title span { color: var(--gold); }
+    .gold-rule { width: 36px; height: 2px; background: var(--gold); margin: 1.2rem 0; }
+    .page-intro { font-size: 1rem; color: var(--muted); max-width: 560px; font-weight: 300; line-height: 1.8; }
+    section { padding: 5rem 6vw; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: var(--dark); margin-bottom: 0.8rem; }
+    #prestations { background: var(--bg); }
+    .prestations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 2rem; }
+    .presta-card { background: var(--surface); padding: 2rem 1.8rem; transition: background 0.2s; }
+    .presta-card:hover { background: var(--gold-bg); }
+    .presta-icon { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+    .presta-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; }
+    .presta-desc { color: var(--muted); font-size: 0.88rem; font-weight: 300; line-height: 1.7; }
+    .presta-list { margin-top: 0.8rem; padding-left: 1rem; color: var(--mid); font-size: 0.85rem; line-height: 1.9; }
+    .presta-list li::marker { color: var(--gold); }
+    #photos { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .photos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .photo-slot { background: var(--bg); border: 1.5px dashed var(--border); aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; color: var(--muted); font-size: 0.82rem; text-align: center; padding: 1rem; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .photo-slot:hover { border-color: var(--gold); background: var(--gold-bg); }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .photo-slot.has-photo { border-style: solid; border-color: var(--border); padding: 0; overflow: hidden; }
+    .photo-slot.has-photo img { display: block; }
+    .photo-slot.has-photo .photo-placeholder { display: none; }
+    .photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+    .photo-slot-icon { font-size: 2rem; opacity: 0.4; }
+    .photo-note { font-size: 0.78rem; color: var(--muted); margin-top: 1rem; font-style: italic; }
+    #tarifs { background: var(--bg); }
+    .tarifs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .tarif-card { background: var(--surface); border: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; transition: border-color 0.2s, background 0.2s; }
+    .tarif-card:hover { border-color: var(--gold); background: var(--gold-bg); }
+    .tarif-card.featured { border-color: var(--gold); background: var(--gold-bg); }
+    .tarif-badge { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+    .tarif-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem; }
+    .tarif-price { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .tarif-unit { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .tarif-list { list-style: none; text-align: left; font-size: 0.85rem; color: var(--mid); line-height: 2; }
+    .tarif-list li::before { content: "✓ "; color: var(--gold); font-weight: 600; }
+    .tarif-note { font-size: 0.78rem; color: var(--muted); margin-top: 2rem; font-style: italic; }
+    #cta { background: var(--dark); text-align: center; padding: 5rem 6vw; }
+    .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: #fff; margin-bottom: 1rem; }
+    .cta-sub { color: rgba(255,255,255,0.5); font-size: 0.95rem; font-weight: 300; margin-bottom: 2rem; }
+    .btn-cta { display: inline-block; padding: 0.9rem 2.5rem; background: var(--gold); color: #fff; font-weight: 500; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.15s; }
+    .btn-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
+    footer { background: var(--dark); padding: 1.5rem 6vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+    .footer-copy { color: rgba(255,255,255,0.3); font-size: 0.78rem; }
+    .footer-back { color: rgba(255,255,255,0.4); font-size: 0.78rem; text-decoration: none; }
+    .footer-back:hover { color: var(--gold); }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (max-width: 768px) { nav { padding: 1rem 5vw; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NLS <span>Services</span></a>
+  <a href="index.html" class="nav-back">← Retour à l'accueil</a>
+</nav>
+
+<div class="page-hero">
+  <p class="breadcrumb"><a href="index.html">Accueil</a> › Livraison à domicile</p>
+  <p class="page-tag">Prestation</p>
+  <h1 class="page-title">Livraison <span>à domicile</span></h1>
+  <div class="gold-rule"></div>
+  <p class="page-intro">Courses alimentaires ou colis, NLS Services assure votre livraison directement chez vous, sur rendez-vous, dans Blois et ses environs.</p>
+</div>
+
+<!-- PRESTATIONS -->
+<section id="prestations">
+  <div class="reveal">
+    <p class="section-label">Ce que nous proposons</p>
+    <h2 class="section-title">Nos services de livraison</h2>
+  </div>
+  <div class="prestations-grid reveal">
+    <div class="presta-card">
+      <span class="presta-icon">🛒</span>
+      <div class="presta-name">Courses alimentaires</div>
+      <p class="presta-desc">Vous nous transmettez votre liste, nous faisons vos courses et les livrons chez vous.</p>
+      <ul class="presta-list">
+        <li>Prise de liste par téléphone ou message</li>
+        <li>Achat en grande surface ou commerce local</li>
+        <li>Livraison à l'heure convenue</li>
+        <li>Idéal seniors, personnes à mobilité réduite</li>
+      </ul>
+    </div>
+    <div class="presta-card">
+      <span class="presta-icon">📦</span>
+      <div class="presta-name">Transport de colis</div>
+      <p class="presta-desc">Besoin d'envoyer ou récupérer un colis ? On s'en occupe pour vous.</p>
+      <ul class="presta-list">
+        <li>Dépôt en point relais ou bureau de poste</li>
+        <li>Récupération de colis</li>
+        <li>Transport entre particuliers</li>
+        <li>Petits objets & documents</li>
+      </ul>
+    </div>
+    <div class="presta-card">
+      <span class="presta-icon">🏃</span>
+      <div class="presta-name">Courses & démarches</div>
+      <p class="presta-desc">Toutes les petites courses du quotidien que vous n'avez pas le temps de faire.</p>
+      <ul class="presta-list">
+        <li>Pharmacie & parapharmacie</li>
+        <li>Dépôt de documents administratifs</li>
+        <li>Achats divers sur demande</li>
+        <li>Service sur rendez-vous</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOS -->
+<section id="photos">
+  <div class="reveal">
+    <p class="section-label">Galerie</p>
+    <h2 class="section-title">En action</h2>
+  </div>
+  <div class="photos-grid reveal">
+    <div class="photo-slot" onclick="document.getElementById('upload1').click()">
+      <input type="file" id="upload1" accept="image/*" style="display:none" onchange="loadPhoto(this, 'slot1')" />
+      <img id="slot1" src="" alt="" />
+      <div class="photo-placeholder">
+        <span class="photo-slot-icon">📷</span>
+        <span>Ajouter une photo</span>
+      </div>
+    </div>
+    <div class="photo-slot" onclick="document.getElementById('upload2').click()">
+      <input type="file" id="upload2" accept="image/*" style="display:none" onchange="loadPhoto(this, 'slot2')" />
+      <img id="slot2" src="" alt="" />
+      <div class="photo-placeholder">
+        <span class="photo-slot-icon">📷</span>
+        <span>Ajouter une photo</span>
+      </div>
+    </div>
+    <div class="photo-slot" onclick="document.getElementById('upload3').click()">
+      <input type="file" id="upload3" accept="image/*" style="display:none" onchange="loadPhoto(this, 'slot3')" />
+      <img id="slot3" src="" alt="" />
+      <div class="photo-placeholder">
+        <span class="photo-slot-icon">📷</span>
+        <span>Ajouter une photo</span>
+      </div>
+    </div>
+    <div class="photo-slot" onclick="document.getElementById('upload4').click()">
+      <input type="file" id="upload4" accept="image/*" style="display:none" onchange="loadPhoto(this, 'slot4')" />
+      <img id="slot4" src="" alt="" />
+      <div class="photo-placeholder">
+        <span class="photo-slot-icon">📷</span>
+        <span>Ajouter une photo</span>
+      </div>
+    </div>
+  </div>
+  <p class="photo-note">Pour mettre vos photos en ligne définitivement, remplacez les emplacements par les noms de vos fichiers images dans le code HTML.</p>
+</section>
+
+<!-- TARIFS -->
+<section id="tarifs">
+  <div class="reveal">
+    <p class="section-label">Nos prix</p>
+    <h2 class="section-title">Tarifs</h2>
+  </div>
+  <div class="tarifs-grid reveal">
+    <div class="tarif-card">
+      <p class="tarif-badge">Formule</p>
+      <p class="tarif-name">Courses alimentaires</p>
+      <p class="tarif-price">XX€</p>
+      <p class="tarif-unit">par livraison</p>
+      <ul class="tarif-list">
+        <li>Prise de liste incluse</li>
+        <li>Achat en supermarché</li>
+        <li>Livraison à domicile</li>
+        <li>Dans la zone d'intervention</li>
+      </ul>
+    </div>
+    <div class="tarif-card featured">
+      <p class="tarif-badge">⭐ Populaire</p>
+      <p class="tarif-name">Transport colis</p>
+      <p class="tarif-price">XX€</p>
+      <p class="tarif-unit">par trajet</p>
+      <ul class="tarif-list">
+        <li>Dépôt ou récupération</li>
+        <li>Point relais / La Poste</li>
+        <li>Retour confirmation inclus</li>
+        <li>Dans la zone d'intervention</li>
+      </ul>
+    </div>
+    <div class="tarif-card">
+      <p class="tarif-badge">Formule</p>
+      <p class="tarif-name">Courses & démarches</p>
+      <p class="tarif-price">XX€</p>
+      <p class="tarif-unit">par heure</p>
+      <ul class="tarif-list">
+        <li>Pharmacie, documents...</li>
+        <li>Achats divers</li>
+        <li>Flexibilité totale</li>
+        <li>Sur rendez-vous</li>
+      </ul>
+    </div>
+  </div>
+  <p class="tarif-note">Tarifs indicatifs pour la zone Blois et environs (30 km). Un supplément kilométrique peut s'appliquer au-delà. Devis gratuit sur demande.</p>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <h2 class="cta-title">Besoin d'une livraison rapidement ?</h2>
+  <p class="cta-sub">Contactez-nous pour organiser votre livraison au plus vite.</p>
+  <a href="index.html#contact" class="btn-cta">Demander un devis</a>
+</section>
+
+<footer>
+  <span class="footer-logo">NLS Services</span>
+  <a href="index.html" class="footer-back">← Retour à l'accueil</a>
+  <span class="footer-copy">© 2025 NLS Services — Blois, Loir-et-Cher</span>
+</footer>
+
+<script>
+  function loadPhoto(input, imgId) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.getElementById(imgId);
+      img.src = e.target.result;
+      img.style.display = 'block';
+      img.closest('.photo-slot').classList.add('has-photo');
+    };
+    reader.readAsDataURL(file);
+  }
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>

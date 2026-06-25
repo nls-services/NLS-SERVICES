@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nettoyage Automobile – NLS Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6; --surface: #ffffff; --dark: #1e1e1e;
+      --mid: #4a4a4a; --muted: #8a8780; --border: #e5e2db;
+      --gold: #b8922a; --gold-lt: #d4aa4a; --gold-bg: #fdf6e8;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--dark); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 6vw;
+      background: rgba(249,248,246,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 700; color: var(--dark); text-decoration: none; }
+    .nav-logo span { color: var(--gold); }
+    .nav-back { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* HERO */
+    .page-hero {
+      padding: 8rem 6vw 4rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .breadcrumb { font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .breadcrumb a { color: var(--gold); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .page-tag { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+    .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.1; color: var(--dark); margin-bottom: 1rem; }
+    .page-title span { color: var(--gold); }
+    .gold-rule { width: 36px; height: 2px; background: var(--gold); margin: 1.2rem 0; }
+    .page-intro { font-size: 1rem; color: var(--muted); max-width: 560px; font-weight: 300; line-height: 1.8; }
+
+    /* SECTIONS */
+    section { padding: 5rem 6vw; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: var(--dark); margin-bottom: 0.8rem; }
+
+    /* PRESTATIONS */
+    #prestations { background: var(--bg); }
+    .prestations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 2rem; }
+    .presta-card { background: var(--surface); padding: 2rem 1.8rem; transition: background 0.2s; }
+    .presta-card:hover { background: var(--gold-bg); }
+    .presta-icon { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+    .presta-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; }
+    .presta-desc { color: var(--muted); font-size: 0.88rem; font-weight: 300; line-height: 1.7; }
+    .presta-list { margin-top: 0.8rem; padding-left: 1rem; color: var(--mid); font-size: 0.85rem; line-height: 1.9; }
+    .presta-list li::marker { color: var(--gold); }
+
+    /* PHOTOS */
+    #photos { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .photos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .photo-slot {
+      background: var(--bg);
+      border: 1.5px dashed var(--border);
+      aspect-ratio: 4/3;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.6rem; color: var(--muted); font-size: 0.82rem; text-align: center; padding: 1rem;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    }
+    .photo-slot:hover { border-color: var(--gold); background: var(--gold-bg); }
+    .photo-slot-icon { font-size: 2rem; opacity: 0.4; }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .photo-slot.has-photo { border-style: solid; border-color: var(--border); padding: 0; overflow: hidden; }
+    .photo-slot.has-photo img { display: block; }
+    .photo-slot.has-photo .photo-placeholder { display: none; }
+    .photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+    .photo-note { font-size: 0.78rem; color: var(--muted); margin-top: 1rem; font-style: italic; }
+
+    /* TARIFS */
+    #tarifs { background: var(--bg); }
+    .tarifs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .tarif-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .tarif-card:hover { border-color: var(--gold); background: var(--gold-bg); }
+    .tarif-card.featured { border-color: var(--gold); background: var(--gold-bg); }
+    .tarif-badge { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+    .tarif-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem; }
+    .tarif-price { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .tarif-unit { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .tarif-list { list-style: none; text-align: left; font-size: 0.85rem; color: var(--mid); line-height: 2; }
+    .tarif-list li::before { content: "✓ "; color: var(--gold); font-weight: 600; }
+    .tarif-note { font-size: 0.78rem; color: var(--muted); margin-top: 2rem; font-style: italic; }
+
+    /* CTA */
+    #cta { background: var(--dark); text-align: center; padding: 5rem 6vw; }
+    .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: #fff; margin-bottom: 1rem; }
+    .cta-sub { color: rgba(255,255,255,0.5); font-size: 0.95rem; font-weight: 300; margin-bottom: 2rem; }
+    .btn-cta { display: inline-block; padding: 0.9rem 2.5rem; background: var(--gold); color: #fff; font-weight: 500; font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.15s; }
+    .btn-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer { background: var(--dark); padding: 1.5rem 6vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+    .footer-copy { color: rgba(255,255,255,0.3); font-size: 0.78rem; }
+    .footer-back { color: rgba(255,255,255,0.4); font-size: 0.78rem; text-decoration: none; }
+    .footer-back:hover { color: var(--gold); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) { nav { padding: 1rem 5vw; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">NLS <span>Services</span></a>
+  <a href="index.html" class="nav-back">← Retour à l'accueil</a>
+</nav>
+
+<div class="page-hero">
+  <p class="breadcrumb"><a href="index.html">Accueil</a> › Nettoyage automobile</p>
+  <p class="page-tag">Prestation</p>
+  <h1 class="page-title">Nettoyage <span>automobile</span></h1>
+  <div class="gold-rule"></div>
+  <p class="page-intro">Un entretien complet et soigneux de votre véhicule, réalisé directement à votre domicile ou sur votre lieu de travail. Résultat professionnel garanti.</p>
+</div>
+
+<!-- PRESTATIONS -->
+<section id="prestations">
+  <div class="reveal">
+    <p class="section-label">Ce qui est inclus</p>
+    <h2 class="section-title">Nos formules de nettoyage</h2>
+  </div>
+  <div class="prestations-grid reveal">
+    <div class="presta-card">
+      <span class="presta-icon">✨</span>
+      <div class="presta-name">Lavage extérieur</div>
+      <p class="presta-desc">Nettoyage complet de la carrosserie pour un résultat éclatant.</p>
+      <ul class="presta-list">
+        <li>Prélavage à la mousse</li>
+        <li>Lavage carrosserie à la main</li>
+        <li>Nettoyage des jantes & pneus</li>
+        <li>Nettoyage des vitres extérieures</li>
+        <li>Séchage & finition</li>
+      </ul>
+    </div>
+    <div class="presta-card">
+      <span class="presta-icon">🪑</span>
+      <div class="presta-name">Nettoyage intérieur</div>
+      <p class="presta-desc">Habitacle impeccable, comme sorti de concession.</p>
+      <ul class="presta-list">
+        <li>Aspiration complète</li>
+        <li>Nettoyage des plastiques & tableau de bord</li>
+        <li>Vitres intérieures</li>
+        <li>Traitement des sièges</li>
+        <li>Désodorisation</li>
+      </ul>
+    </div>
+    <div class="presta-card">
+      <span class="presta-icon">🚗</span>
+      <div class="presta-name">Nettoyage complet</div>
+      <p class="presta-desc">L'offre tout-en-un pour un véhicule irréprochable de A à Z.</p>
+      <ul class="presta-list">
+        <li>Lavage extérieur complet</li>
+        <li>Nettoyage intérieur complet</li>
+        <li>Traitement des plastiques ext.</li>
+        <li>Cire de protection carrosserie</li>
+        <li>Finition professionnelle</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOS -->
+<section id="photos">
+  <div class="reveal">
+    <p class="section-label">Galerie</p>
+    <h2 class="section-title">Nos réalisations</h2>
+  </div>
+  <div class="photos-grid reveal">
+    <div class="photo-slot" onclick="document.getElementById('upload1').click()">
+      <input type="file" id="upload1" accept="image/*" style="display:none" onchange="loadPhoto(this, 'slot1')" />
+      <img id="slot1" src="" alt="" />
+      <div class="photo-placeholder">
+        <span class="photo-slot-icon">📷</span>
+        <span>Ajouter une photo</span>
+      </div>
+    </div>
+    <div class="photo-slot" onclick="document.getElementById('upload2').click()">
+      <input type="file" id="upload2" accept="image/*" style="display:none" onchange="loadPhoto(this, 'slot2')" />
+      <img id="slot2" src="" alt="" />
+      <div class="photo-placeholder">
+        <span class="photo-slot-icon">📷</span>
+        <span>Ajouter une photo</span>
+      </div>
+    </div>
+    <div class="photo-slot" onclick="document.getElementById('upload3').click()">
+      <input type="file" id="upload3" accept="image/*" style="display:none" onchange="loadPhoto(this, 'slot3')" />
+      <img id="slot3" src="" alt="" />
+      <div class="photo-placeholder">
+        <span class="photo-slot-icon">📷</span>
+        <span>Ajouter une photo</span>
+      </div>
+    </div>
+    <div class="photo-slot" onclick="document.getElementById('upload4').click()">
+      <input type="file" id="upload4" accept="image/*" style="display:none" onchange="loadPhoto(this, 'slot4')" />
+      <img id="slot4" src="" alt="" />
+      <div class="photo-placeholder">
+        <span class="photo-slot-icon">📷</span>
+        <span>Ajouter une photo</span>
+      </div>
+    </div>
+  </div>
+  <p class="photo-note">Pour mettre vos photos en ligne définitivement, remplacez les emplacements par les noms de vos fichiers images dans le code HTML.</p>
+</section>
+
+<!-- TARIFS -->
+<section id="tarifs">
+  <div class="reveal">
+    <p class="section-label">Nos prix</p>
+    <h2 class="section-title">Tarifs</h2>
+  </div>
+  <div class="tarifs-grid reveal">
+    <div class="tarif-card">
+      <p class="tarif-badge">Formule</p>
+      <p class="tarif-name">Extérieur</p>
+      <p class="tarif-price">XX€</p>
+      <p class="tarif-unit">par véhicule</p>
+      <ul class="tarif-list">
+        <li>Prélavage mousse</li>
+        <li>Lavage carrosserie</li>
+        <li>Jantes & pneus</li>
+        <li>Vitres extérieures</li>
+        <li>Séchage</li>
+      </ul>
+    </div>
+    <div class="tarif-card">
+      <p class="tarif-badge">Formule</p>
+      <p class="tarif-name">Intérieur</p>
+      <p class="tarif-price">XX€</p>
+      <p class="tarif-unit">par véhicule</p>
+      <ul class="tarif-list">
+        <li>Aspiration complète</li>
+        <li>Plastiques & tableau de bord</li>
+        <li>Vitres intérieures</li>
+        <li>Traitement sièges</li>
+        <li>Désodorisation</li>
+      </ul>
+    </div>
+    <div class="tarif-card featured">
+      <p class="tarif-badge">⭐ Meilleure offre</p>
+      <p class="tarif-name">Complet</p>
+      <p class="tarif-price">XX€</p>
+      <p class="tarif-unit">par véhicule</p>
+      <ul class="tarif-list">
+        <li>Lavage extérieur complet</li>
+        <li>Nettoyage intérieur complet</li>
+        <li>Plastiques extérieurs</li>
+        <li>Cire de protection</li>
+        <li>Finition professionnelle</li>
+      </ul>
+    </div>
+  </div>
+  <p class="tarif-note">Tarifs indicatifs pour un véhicule citadine/berline. Supplément possible pour SUV, monospace ou véhicule très encrassé. Déplacement inclus dans la zone d'intervention.</p>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <h2 class="cta-title">Prêt à retrouver un véhicule impeccable ?</h2>
+  <p class="cta-sub">Contactez-nous pour fixer un rendez-vous à votre convenance.</p>
+  <a href="index.html#contact" class="btn-cta">Demander un devis</a>
+</section>
+
+<footer>
+  <span class="footer-logo">NLS Services</span>
+  <a href="index.html" class="footer-back">← Retour à l'accueil</a>
+  <span class="footer-copy">© 2025 NLS Services — Blois, Loir-et-Cher</span>
+</footer>
+
+<script>
+  function loadPhoto(input, imgId) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.getElementById(imgId);
+      img.src = e.target.result;
+      img.style.display = 'block';
+      img.closest('.photo-slot').classList.add('has-photo');
+    };
+    reader.readAsDataURL(file);
+  }
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
